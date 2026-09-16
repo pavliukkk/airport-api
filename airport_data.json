@@ -280,13 +280,12 @@
     }
   },
   {
-    "model": "auth.user",
+    "model": "user.user",
     "pk": 1,
     "fields": {
       "password": "pbkdf2_sha256$720000$fixture$unused",
       "last_login": null,
       "is_superuser": false,
-      "username": "alex",
       "first_name": "Alex",
       "last_name": "Morgan",
       "email": "alex@example.com",
@@ -298,13 +297,12 @@
     }
   },
   {
-    "model": "auth.user",
+    "model": "user.user",
     "pk": 2,
     "fields": {
       "password": "pbkdf2_sha256$720000$fixture$unused",
       "last_login": null,
       "is_superuser": false,
-      "username": "emma",
       "first_name": "Emma",
       "last_name": "Carter",
       "email": "emma@example.com",
@@ -316,13 +314,12 @@
     }
   },
   {
-    "model": "auth.user",
+    "model": "user.user",
     "pk": 3,
     "fields": {
       "password": "pbkdf2_sha256$720000$fixture$unused",
       "last_login": null,
       "is_superuser": false,
-      "username": "liam",
       "first_name": "Liam",
       "last_name": "Walker",
       "email": "liam@example.com",
@@ -334,13 +331,12 @@
     }
   },
   {
-    "model": "auth.user",
+    "model": "user.user",
     "pk": 4,
     "fields": {
       "password": "pbkdf2_sha256$720000$fixture$unused",
       "last_login": null,
       "is_superuser": false,
-      "username": "sophia",
       "first_name": "Sophia",
       "last_name": "Hughes",
       "email": "sophia@example.com",
@@ -352,13 +348,12 @@
     }
   },
   {
-    "model": "auth.user",
+    "model": "user.user",
     "pk": 5,
     "fields": {
       "password": "pbkdf2_sha256$720000$fixture$unused",
       "last_login": null,
       "is_superuser": false,
-      "username": "noah",
       "first_name": "Noah",
       "last_name": "Miller",
       "email": "noah@example.com",
