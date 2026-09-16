@@ -69,7 +69,12 @@ class RouteDetailSerializer(serializers.ModelSerializer):
 class CrewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Crew
-        fields = "__all__"
+        fields = [
+            "id",
+            "first_name",
+            "last_name",
+            "full_name",
+        ]
 
 
 class OrderSerializer(serializers.ModelSerializer):
