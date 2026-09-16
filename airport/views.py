@@ -1,5 +1,4 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
 
 from airport.models import (
     AirplaneType,
@@ -21,6 +20,8 @@ from airport.serializers import (
     AirplaneSerializer,
     FlightSerializer,
     OrderSerializer,
+    RouteListSerializer,
+    RouteDetailSerializer,
 )
 
 
@@ -46,6 +47,14 @@ class RouteViewSet(
     queryset = Route.objects.all()
     serializer_class = RouteSerializer
     permission_classes = (IsAuthenticatedReadOnlyOrIsAdmin,)
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return RouteListSerializer
+        elif self.action == "retrieve":
+            return RouteDetailSerializer
+
+        return RouteSerializer
 
 
 class CrewViewSet(

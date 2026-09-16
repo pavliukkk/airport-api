@@ -36,6 +36,36 @@ class RouteSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class RouteListSerializer(serializers.ModelSerializer):
+    source = serializers.SlugRelatedField(many=False, read_only=True, slug_field="name")
+    destination = serializers.SlugRelatedField(
+        many=False, read_only=True, slug_field="name"
+    )
+
+    class Meta:
+        model = Route
+        fields = [
+            "id",
+            "distance",
+            "source",
+            "destination",
+        ]
+
+
+class RouteDetailSerializer(serializers.ModelSerializer):
+    source = AirportSerializer(read_only=True)
+    destination = AirportSerializer(read_only=True)
+
+    class Meta:
+        model = Route
+        fields = [
+            "id",
+            "distance",
+            "source",
+            "destination",
+        ]
+
+
 class CrewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Crew
