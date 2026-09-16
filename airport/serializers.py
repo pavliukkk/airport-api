@@ -100,6 +100,19 @@ class TicketSerializer(serializers.ModelSerializer):
 
 
 class FlightSerializer(serializers.ModelSerializer):
+    route = RouteDetailSerializer(read_only=True)
+    airplane = AirplaneSerializer(read_only=True)
+    crew = serializers.SlugRelatedField(
+        many=True, read_only=True, slug_field="full_name"
+    )
+
     class Meta:
         model = Flight
-        fields = "__all__"
+        fields = [
+            "id",
+            "departure_time",
+            "arrival_time",
+            "route",
+            "airplane",
+            "crew",
+        ]
