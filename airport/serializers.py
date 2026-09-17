@@ -39,10 +39,10 @@ class AirportSerializer(serializers.ModelSerializer):
 class RouteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Route
-        fields = []
+        fields = "__all__"
 
 
-class RouteListSerializer(serializers.ModelSerializer):
+class RouteListSerializer(RouteSerializer):
     source = serializers.SlugRelatedField(many=False, read_only=True, slug_field="name")
     destination = serializers.SlugRelatedField(
         many=False, read_only=True, slug_field="name"
@@ -58,7 +58,7 @@ class RouteListSerializer(serializers.ModelSerializer):
         ]
 
 
-class RouteDetailSerializer(serializers.ModelSerializer):
+class RouteDetailSerializer(RouteSerializer):
     source = AirportSerializer(read_only=True)
     destination = AirportSerializer(read_only=True)
 
@@ -105,7 +105,7 @@ class FlightSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class FlightListSerializer(serializers.ModelSerializer):
+class FlightListSerializer(FlightSerializer):
     airplane = serializers.SlugRelatedField(
         many=False, read_only=True, slug_field="name"
     )
@@ -124,7 +124,7 @@ class FlightListSerializer(serializers.ModelSerializer):
         ]
 
 
-class FlightDetailSerializer(serializers.ModelSerializer):
+class FlightDetailSerializer(FlightSerializer):
     route = RouteDetailSerializer(read_only=True)
     airplane = serializers.SerializerMethodField(read_only=True)
     crew = serializers.SlugRelatedField(
@@ -149,7 +149,7 @@ class FlightDetailSerializer(serializers.ModelSerializer):
         }
 
 
-class TicketDetailSerializer(serializers.ModelSerializer):
+class TicketDetailSerializer(TicketSerializer):
     flight = FlightListSerializer(read_only=True)
 
     class Meta:
@@ -178,7 +178,7 @@ class OrderSerializer(serializers.ModelSerializer):
             return order
 
 
-class OrderDetailSerializer(serializers.ModelSerializer):
+class OrderDetailSerializer(OrderSerializer):
     tickets = TicketDetailSerializer(many=True, read_only=False, allow_empty=False)
 
     class Meta:
