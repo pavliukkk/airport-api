@@ -132,7 +132,7 @@ class FlightListSerializer(serializers.ModelSerializer):
 
 class FlightDetailSerializer(serializers.ModelSerializer):
     route = RouteDetailSerializer(read_only=True)
-    airplane = AirplaneSerializer(read_only=True)
+    airplane = serializers.SerializerMethodField(read_only=True)
     crew = serializers.SlugRelatedField(
         many=True, read_only=True, slug_field="full_name"
     )
@@ -147,6 +147,12 @@ class FlightDetailSerializer(serializers.ModelSerializer):
             "airplane",
             "crew",
         ]
+
+    def get_airplane(self, obj):
+        return {
+            "name": obj.airplane.name,
+            "airplane_type": obj.airplane.airplane_type.name,
+        }
 
 
 class TicketDetailSerializer(serializers.ModelSerializer):
