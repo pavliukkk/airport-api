@@ -5,7 +5,6 @@ from airport.models import (
     Airport,
     Route,
     Crew,
-    Ticket,
     Airplane,
     Flight,
     Order,
@@ -16,12 +15,12 @@ from airport.serializers import (
     AirportSerializer,
     RouteSerializer,
     CrewSerializer,
-    TicketSerializer,
     AirplaneSerializer,
     FlightSerializer,
     OrderSerializer,
     RouteListSerializer,
     RouteDetailSerializer,
+    OrderDetailSerializer,
 )
 
 
@@ -65,14 +64,6 @@ class CrewViewSet(
     permission_classes = (IsAuthenticatedReadOnlyOrIsAdmin,)
 
 
-class TicketViewSet(
-    viewsets.ModelViewSet,
-):
-    queryset = Ticket.objects.all()
-    serializer_class = TicketSerializer
-    permission_classes = (IsAuthenticatedReadOnlyOrIsAdmin,)
-
-
 class AirplaneViewSet(
     viewsets.ModelViewSet,
 ):
@@ -87,6 +78,14 @@ class OrderViewSet(
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     permission_classes = (IsAuthenticatedReadOnlyOrIsAdmin,)
+
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return OrderDetailSerializer
+        return OrderSerializer
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user)
 
 
 class FlightViewSet(
