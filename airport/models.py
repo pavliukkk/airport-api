@@ -11,10 +11,16 @@ class Crew(models.Model):
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
 
+    def __str__(self):
+        return self.full_name
+
 
 class Airport(models.Model):
     name = models.CharField(max_length=100)
     closest_big_city = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
 
 
 class Route(models.Model):
@@ -30,9 +36,15 @@ class Route(models.Model):
     )
     distance = models.IntegerField()
 
+    def __str__(self):
+        return f"{self.source} -> {self.destination} ({self.distance})"
+
 
 class AirplaneType(models.Model):
     name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
 
 
 class Airplane(models.Model):
@@ -45,6 +57,13 @@ class Airplane(models.Model):
         related_name="airplanes",
     )
 
+    @property
+    def capacity(self):
+        return self.rows * self.seats_in_row
+
+    def __str__(self):
+        return f"{self.name} ({self.capacity} seats)"
+
 
 class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -53,6 +72,9 @@ class Order(models.Model):
         on_delete=models.CASCADE,
         related_name="orders",
     )
+
+    def __str__(self):
+        return f"{self.user} {self.created_at}"
 
 
 class Flight(models.Model):
@@ -72,6 +94,9 @@ class Flight(models.Model):
     )
     departure_time = models.DateTimeField()
     arrival_time = models.DateTimeField()
+
+    def __str__(self):
+        return f"{self.route.__str__()} {self.airplane.name}"
 
 
 class Ticket(models.Model):
@@ -129,6 +154,9 @@ class Ticket(models.Model):
             using=using,
             update_fields=update_fields,
         )
+
+    def __str__(self):
+        return f"{self.row} {self.seat}"
 
     class Meta:
         unique_together = ("flight", "row", "seat")
