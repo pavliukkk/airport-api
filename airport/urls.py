@@ -8,7 +8,6 @@ from airport.views import (
     AirportViewSet,
     RouteViewSet,
     OrderViewSet,
-    TicketViewSet,
     AirplaneViewSet,
 )
 
@@ -19,7 +18,6 @@ router.register("crews", CrewViewSet)
 router.register("airports", AirportViewSet)
 router.register("airplanes", AirplaneViewSet)
 router.register("routes", RouteViewSet)
-router.register("tickets", TicketViewSet)
 router.register("orders", OrderViewSet)
 
 
