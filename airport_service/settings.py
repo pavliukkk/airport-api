@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "user",
     "airport",
     "rest_framework",
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -54,6 +55,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "airport_service.urls"
@@ -156,3 +158,7 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(weeks=7),
     "ROTATE_REFRESH_TOKENS": True,
 }
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]

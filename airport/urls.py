@@ -1,3 +1,4 @@
+from debug_toolbar.toolbar import debug_toolbar_urls
 from django.urls import path, include
 from rest_framework import routers
 
@@ -23,6 +24,6 @@ router.register("orders", OrderViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
-]
+] + debug_toolbar_urls()
 
 app_name = "airport"

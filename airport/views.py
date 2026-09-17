@@ -37,9 +37,16 @@ class AirplaneTypeViewSet(
 class AirportViewSet(
     viewsets.ModelViewSet,
 ):
-    queryset = Airport.objects.all()
     serializer_class = AirportSerializer
     permission_classes = (IsAuthenticatedReadOnlyOrIsAdmin,)
+    queryset = Airport.objects.all()
+
+    def get_queryset(self):
+        queryset = self.queryset
+        airport_name = self.request.query_params.get("name")
+        if airport_name:
+            queryset = queryset.filter(name__icontains=airport_name)
+        return queryset
 
 
 class RouteViewSet(
