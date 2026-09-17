@@ -21,6 +21,8 @@ from airport.serializers import (
     RouteListSerializer,
     RouteDetailSerializer,
     OrderDetailSerializer,
+    FlightListSerializer,
+    FlightDetailSerializer,
 )
 
 
@@ -94,3 +96,10 @@ class FlightViewSet(
     queryset = Flight.objects.all()
     serializer_class = FlightSerializer
     permission_classes = (IsAuthenticatedReadOnlyOrIsAdmin,)
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return FlightListSerializer
+        elif self.action == "retrieve":
+            return FlightDetailSerializer
+        return FlightSerializer
