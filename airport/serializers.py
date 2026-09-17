@@ -45,7 +45,7 @@ class AirportSerializer(serializers.ModelSerializer):
 class RouteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Route
-        fields = "__all__"
+        fields = []
 
 
 class RouteListSerializer(serializers.ModelSerializer):
@@ -58,9 +58,9 @@ class RouteListSerializer(serializers.ModelSerializer):
         model = Route
         fields = [
             "id",
-            "distance",
             "source",
             "destination",
+            "distance",
         ]
 
 
@@ -72,9 +72,9 @@ class RouteDetailSerializer(serializers.ModelSerializer):
         model = Route
         fields = [
             "id",
-            "distance",
             "source",
             "destination",
+            "distance",
         ]
 
 
