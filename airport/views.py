@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 
 from airport.models import (
     AirplaneType,
@@ -89,9 +89,15 @@ class OrderViewSet(
     def get_queryset(self):
         return Order.objects.filter(user=self.request.user)
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 
 class FlightViewSet(
-    viewsets.ModelViewSet,
+    viewsets.GenericViewSet,
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
 ):
     queryset = Flight.objects.all()
     serializer_class = FlightSerializer
