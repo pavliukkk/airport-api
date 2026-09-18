@@ -54,6 +54,15 @@ class Route(models.Model):
             )
         ]
 
+    @staticmethod
+    def validate_route(source, destination, error_to_raise):
+        if source == destination:
+            raise error_to_raise(
+                {
+                    "source_different_from_destination": "Source and destination must be different."
+                }
+            )
+
 
 class AirplaneType(models.Model):
     name = models.CharField(max_length=100)

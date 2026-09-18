@@ -46,6 +46,15 @@ class RouteSerializer(serializers.ModelSerializer):
         slug_field="name",
     )
 
+    def validate(self, attrs):
+        data = super(RouteSerializer, self).validate(attrs=attrs)
+        Route.validate_route(
+            attrs["source"],
+            attrs["destination"],
+            ValidationError,
+        )
+        return data
+
     class Meta:
         model = Route
         fields = [
