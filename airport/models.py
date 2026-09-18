@@ -43,7 +43,7 @@ class Route(models.Model):
     distance = models.IntegerField()
 
     def __str__(self):
-        return f"{self.source} -> {self.destination} ({self.distance})"
+        return f"{self.source} -> {self.destination} ({self.distance} km)"
 
     class Meta:
         ordering = ["distance"]
@@ -114,7 +114,13 @@ class Flight(models.Model):
     arrival_time = models.DateTimeField()
 
     def __str__(self):
-        return f"{self.route.__str__()} {self.airplane.name}"
+        route = self._state.fields_cache.get("route")
+        airplane = self._state.fields_cache.get("airplane")
+
+        if route is not None and airplane is not None:
+            return f"{route} {airplane.name}"
+
+        return f"Flight #{self.pk}"
 
     class Meta:
         ordering = ["departure_time"]

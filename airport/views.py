@@ -1,4 +1,5 @@
 from rest_framework import viewsets, mixins
+from rest_framework.renderers import JSONRenderer
 
 from airport.models import (
     AirplaneType,
@@ -10,6 +11,7 @@ from airport.models import (
     Order,
 )
 from airport.permissions import IsAuthenticatedReadOnlyOrIsAdmin
+from airport.renders import CustomBrowsableAPIRenderer
 from airport.serializers import (
     AirplaneTypeSerializer,
     AirportSerializer,
@@ -49,11 +51,16 @@ class AirportViewSet(
         return queryset
 
 
-class RouteViewSet(
-    viewsets.ModelViewSet,
-):
-    queryset = Route.objects.all()
+class RouteViewSet(viewsets.ModelViewSet):
+    queryset = Route.objects.select_related(
+        "source",
+        "destination",
+    )
     serializer_class = RouteSerializer
+    renderer_classes = [
+        JSONRenderer,
+        CustomBrowsableAPIRenderer,
+    ]
     permission_classes = (IsAuthenticatedReadOnlyOrIsAdmin,)
 
     def get_serializer_class(self):
@@ -76,7 +83,7 @@ class CrewViewSet(
 class AirplaneViewSet(
     viewsets.ModelViewSet,
 ):
-    queryset = Airplane.objects.all()
+    queryset = Airplane.objects.select_related()
     serializer_class = AirplaneSerializer
     permission_classes = (IsAuthenticatedReadOnlyOrIsAdmin,)
 
@@ -84,7 +91,7 @@ class AirplaneViewSet(
 class OrderViewSet(
     viewsets.ModelViewSet,
 ):
-    queryset = Order.objects.all()
+    queryset = Order.objects.prefetch_related("tickets")
     serializer_class = OrderSerializer
     permission_classes = (IsAuthenticatedReadOnlyOrIsAdmin,)
 
@@ -94,7 +101,7 @@ class OrderViewSet(
         return OrderSerializer
 
     def get_queryset(self):
-        return Order.objects.filter(user=self.request.user)
+        return Order.objects.prefetch_related("tickets").filter(user=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -106,7 +113,12 @@ class FlightViewSet(
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
 ):
-    queryset = Flight.objects.all()
+    queryset = Flight.objects.select_related(
+        "route",
+        "route__source",
+        "route__destination",
+        "airplane",
+    ).prefetch_related("crew")
     serializer_class = FlightSerializer
     permission_classes = (IsAuthenticatedReadOnlyOrIsAdmin,)
 

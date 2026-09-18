@@ -37,9 +37,23 @@ class AirportSerializer(serializers.ModelSerializer):
 
 
 class RouteSerializer(serializers.ModelSerializer):
+    source = serializers.SlugRelatedField(
+        queryset=Airport.objects.all(),
+        slug_field="name",
+    )
+    destination = serializers.SlugRelatedField(
+        queryset=Airport.objects.all(),
+        slug_field="name",
+    )
+
     class Meta:
         model = Route
-        fields = "__all__"
+        fields = [
+            "id",
+            "source",
+            "destination",
+            "distance",
+        ]
 
 
 class RouteListSerializer(RouteSerializer):
@@ -100,9 +114,22 @@ class TicketSerializer(serializers.ModelSerializer):
 
 
 class FlightSerializer(serializers.ModelSerializer):
+    route = serializers.PrimaryKeyRelatedField(
+        queryset=Route.objects.select_related(
+            "source",
+            "destination",
+        )
+    )
+
     class Meta:
         model = Flight
-        fields = "__all__"
+        fields = [
+            "id",
+            "departure_time",
+            "arrival_time",
+            "route",
+            "airplane",
+        ]
 
 
 class FlightListSerializer(FlightSerializer):
