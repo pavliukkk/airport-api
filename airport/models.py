@@ -47,6 +47,12 @@ class Route(models.Model):
 
     class Meta:
         ordering = ["distance"]
+        constraints = [
+            models.CheckConstraint(
+                condition=~models.Q(source=models.F("destination")),
+                name="source_different_from_destination",
+            )
+        ]
 
 
 class AirplaneType(models.Model):
