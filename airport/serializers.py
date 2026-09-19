@@ -24,6 +24,7 @@ class AirplaneTypeSerializer(serializers.ModelSerializer):
             name=attrs["name"],
         ).exists():
             raise ValidationError("Airplane type with this name already exists.")
+        return attrs
 
 
 class AirplaneSerializer(serializers.ModelSerializer):
@@ -46,6 +47,7 @@ class AirplaneSerializer(serializers.ModelSerializer):
             airplane_type=attrs["airplane_type"].id,
         ).exists():
             raise ValidationError("Airplane type with this data already exists.")
+        return attrs
 
 
 class AirportSerializer(serializers.ModelSerializer):
