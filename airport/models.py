@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models import Q
 from rest_framework.exceptions import ValidationError
 
 
@@ -27,6 +28,21 @@ class Airport(models.Model):
 
     class Meta:
         ordering = ["name"]
+        constraints = [
+            models.CheckConstraint(
+                condition=Q(closest_big_city__regex=r"^[A-Za-z ]+$"),
+                name="closest_big_city must have only letters",
+            )
+        ]
+
+    @staticmethod
+    def validate_closest_big_city(closest_big_city, error_to_raise):
+        if not all(c.isalpha() or c.isspace() for c in closest_big_city):
+            raise error_to_raise(
+                {
+                    "closest_big_city_has_numbers": f"closest_big_city must have only letters or (and) spaces."
+                }
+            )
 
 
 class Route(models.Model):

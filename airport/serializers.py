@@ -35,6 +35,14 @@ class AirportSerializer(serializers.ModelSerializer):
         model = Airport
         fields = "__all__"
 
+    def validate(self, attrs):
+        data = super(AirportSerializer, self).validate(attrs=attrs)
+        Airport.validate_closest_big_city(
+            attrs["closest_big_city"],
+            ValidationError,
+        )
+        return data
+
 
 class RouteSerializer(serializers.ModelSerializer):
     source = serializers.SlugRelatedField(
