@@ -31,7 +31,7 @@ class AirplaneSerializer(serializers.ModelSerializer):
         many=False,
         read_only=False,
         slug_field="name",
-        queryset=Airplane.objects.all(),
+        queryset=AirplaneType.objects.all(),
     )
 
     class Meta:
@@ -45,7 +45,7 @@ class AirplaneSerializer(serializers.ModelSerializer):
             seats_in_row=attrs["seats_in_row"],
             airplane_type=attrs["airplane_type"].id,
         ).exists():
-            raise ValidationError("Airplane type with this name already exists.")
+            raise ValidationError("Airplane type with this data already exists.")
 
 
 class AirportSerializer(serializers.ModelSerializer):
