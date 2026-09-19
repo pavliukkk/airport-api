@@ -19,15 +19,33 @@ class AirplaneTypeSerializer(serializers.ModelSerializer):
         model = AirplaneType
         fields = "__all__"
 
+    def validate(self, attrs):
+        if AirplaneType.objects.filter(
+            name=attrs["name"],
+        ).exists():
+            raise ValidationError("Airplane type with this name already exists.")
+
 
 class AirplaneSerializer(serializers.ModelSerializer):
     airplane_type = serializers.SlugRelatedField(
-        many=False, read_only=True, slug_field="name"
+        many=False,
+        read_only=False,
+        slug_field="name",
+        queryset=Airplane.objects.all(),
     )
 
     class Meta:
         model = Airplane
         fields = ["id", "name", "rows", "seats_in_row", "airplane_type", "capacity"]
+
+    def validate(self, attrs):
+        if Airplane.objects.filter(
+            name=attrs["name"],
+            rows=attrs["rows"],
+            seats_in_row=attrs["seats_in_row"],
+            airplane_type=attrs["airplane_type"].id,
+        ).exists():
+            raise ValidationError("Airplane type with this name already exists.")
 
 
 class AirportSerializer(serializers.ModelSerializer):
