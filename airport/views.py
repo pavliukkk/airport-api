@@ -35,6 +35,14 @@ class AirplaneTypeViewSet(
     serializer_class = AirplaneTypeSerializer
     permission_classes = (IsAuthenticatedReadOnlyOrIsAdmin,)
 
+    def get_queryset(self):
+        queryset = self.queryset
+        name = self.request.query_params.get("name")
+
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+        return queryset
+
 
 class AirportViewSet(
     viewsets.ModelViewSet,
@@ -86,6 +94,18 @@ class AirplaneViewSet(
     queryset = Airplane.objects.select_related()
     serializer_class = AirplaneSerializer
     permission_classes = (IsAuthenticatedReadOnlyOrIsAdmin,)
+
+    def get_queryset(self):
+        queryset = self.queryset
+        name = self.request.query_params.get("name")
+        airplane_type = self.request.query_params.get("airplane_type")
+
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+        if airplane_type:
+            queryset = queryset.filter(airplane_type__name__icontains=airplane_type)
+
+        return queryset
 
 
 class OrderViewSet(
