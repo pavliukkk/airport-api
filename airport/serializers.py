@@ -155,6 +155,11 @@ class FlightListSerializer(FlightSerializer):
     )
     source = serializers.CharField(read_only=True, source="route.source.name")
     destination = serializers.CharField(read_only=True, source="route.destination.name")
+    tickets_available = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = Flight
+        fields = []
 
     class Meta:
         model = Flight
@@ -165,6 +170,7 @@ class FlightListSerializer(FlightSerializer):
             "source",
             "destination",
             "airplane",
+            "tickets_available",
         ]
 
 
@@ -173,6 +179,9 @@ class FlightDetailSerializer(FlightSerializer):
     airplane = serializers.SerializerMethodField(read_only=True)
     crew = serializers.SlugRelatedField(
         many=True, read_only=True, slug_field="full_name"
+    )
+    taken_seats = serializers.SlugRelatedField(
+        source="tickets", many=True, read_only=True, slug_field="seat"
     )
 
     class Meta:
@@ -184,6 +193,7 @@ class FlightDetailSerializer(FlightSerializer):
             "route",
             "airplane",
             "crew",
+            "taken_seats",
         ]
 
     def get_airplane(self, obj):

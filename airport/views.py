@@ -1,3 +1,4 @@
+from django.db.models import Count, F
 from rest_framework import viewsets, mixins
 from rest_framework.renderers import JSONRenderer
 
@@ -161,3 +162,14 @@ class FlightViewSet(
         elif self.action == "retrieve":
             return FlightDetailSerializer
         return FlightSerializer
+
+    def get_queryset(self):
+        queryset = self.queryset
+        if self.action == "list":
+            queryset = (
+                queryset.annotate(
+                    tickets_available=F("airplane__rows") * F("airplane__seats_in_row")
+                    - Count("tickets")
+                )
+            ).order_by("id")
+        return queryset
