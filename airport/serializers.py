@@ -184,10 +184,6 @@ class FlightListSerializer(FlightSerializer):
 
     class Meta:
         model = Flight
-        fields = []
-
-    class Meta:
-        model = Flight
         fields = [
             "id",
             "departure_time",

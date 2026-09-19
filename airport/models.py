@@ -40,7 +40,7 @@ class Airport(models.Model):
         if not all(c.isalpha() or c.isspace() for c in closest_big_city):
             raise error_to_raise(
                 {
-                    "closest_big_city_has_numbers": f"closest_big_city must have only letters or (and) spaces."
+                    "closest_big_city_has_numbers": "closest_big_city must have only letters or (and) spaces."
                 }
             )
 
