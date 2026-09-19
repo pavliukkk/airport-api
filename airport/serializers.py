@@ -84,7 +84,6 @@ class RouteSerializer(serializers.ModelSerializer):
         if Route.objects.filter(
             source=attrs["source"].id,
             destination=attrs["destination"].id,
-            distance=attrs["distance"],
         ).exists():
             raise ValidationError("Airport with these data already exists.")
         return data
