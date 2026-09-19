@@ -123,11 +123,14 @@ class AirplaneViewSet(
 
 
 class OrderViewSet(
-    viewsets.ModelViewSet,
+    viewsets.GenericViewSet,
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
 ):
     queryset = Order.objects.prefetch_related("tickets")
     serializer_class = OrderSerializer
-    permission_classes = (IsAuthenticatedReadOnlyOrIsAdmin,)
 
     def get_serializer_class(self):
         if self.action == "retrieve":
