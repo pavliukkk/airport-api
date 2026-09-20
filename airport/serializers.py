@@ -20,10 +20,12 @@ class AirplaneTypeSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def validate(self, attrs):
-        if AirplaneType.objects.filter(
-            name=attrs["name"],
-        ).exists():
-            raise ValidationError("Airplane type with this name already exists.")
+        request = self.context.get("request")
+        if request.method == "POST":
+            if AirplaneType.objects.filter(
+                name=attrs["name"],
+            ).exists():
+                raise ValidationError("Airplane type with this name already exists.")
         return attrs
 
 
@@ -37,16 +39,26 @@ class AirplaneSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Airplane
-        fields = ["id", "name", "rows", "seats_in_row", "airplane_type", "capacity"]
+        fields = [
+            "id",
+            "name",
+            "rows",
+            "seats_in_row",
+            "airplane_type",
+            "capacity",
+            "image",
+        ]
 
     def validate(self, attrs):
-        if Airplane.objects.filter(
-            name=attrs["name"],
-            rows=attrs["rows"],
-            seats_in_row=attrs["seats_in_row"],
-            airplane_type=attrs["airplane_type"].id,
-        ).exists():
-            raise ValidationError("Airplane type with this data already exists.")
+        request = self.context.get("request")
+        if request.method == "POST":
+            if Airplane.objects.filter(
+                name=attrs["name"],
+                rows=attrs["rows"],
+                seats_in_row=attrs["seats_in_row"],
+                airplane_type=attrs["airplane_type"].id,
+            ).exists():
+                raise ValidationError("Airplane type with this data already exists.")
         return attrs
 
 
@@ -81,11 +93,13 @@ class RouteSerializer(serializers.ModelSerializer):
             attrs["destination"],
             ValidationError,
         )
-        if Route.objects.filter(
-            source=attrs["source"].id,
-            destination=attrs["destination"].id,
-        ).exists():
-            raise ValidationError("Airport with these data already exists.")
+        request = self.context.get("request")
+        if request.method == "POST":
+            if Route.objects.filter(
+                source=attrs["source"].id,
+                destination=attrs["destination"].id,
+            ).exists():
+                raise ValidationError("Airport with these data already exists.")
         return data
 
     class Meta:
