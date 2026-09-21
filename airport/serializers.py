@@ -29,6 +29,15 @@ class AirplaneTypeSerializer(serializers.ModelSerializer):
         return attrs
 
 
+class AirplaneImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Airplane
+        fields = [
+            "id",
+            "image",
+        ]
+
+
 class AirplaneSerializer(serializers.ModelSerializer):
     airplane_type = serializers.SlugRelatedField(
         many=False,
@@ -46,7 +55,6 @@ class AirplaneSerializer(serializers.ModelSerializer):
             "seats_in_row",
             "airplane_type",
             "capacity",
-            "image",
         ]
 
     def validate(self, attrs):
