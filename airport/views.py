@@ -569,6 +569,7 @@ class OrderViewSet(
 ):
     queryset = Order.objects.prefetch_related("tickets")
     serializer_class = OrderSerializer
+    permission_classes = ()
 
     @extend_schema(
         summary="List orders",
