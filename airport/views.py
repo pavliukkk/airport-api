@@ -14,7 +14,6 @@ from airport.models import (
     Flight,
     Order,
 )
-from airport.permissions import IsAuthenticatedReadOnlyOrIsAdmin
 from airport.renders import CustomBrowsableAPIRenderer
 from airport.serializers import (
     AirplaneTypeSerializer,
@@ -38,7 +37,6 @@ class AirplaneTypeViewSet(
 ):
     queryset = AirplaneType.objects.all()
     serializer_class = AirplaneTypeSerializer
-    permission_classes = (IsAuthenticatedReadOnlyOrIsAdmin,)
 
     def get_queryset(self):
         queryset = self.queryset
@@ -53,7 +51,6 @@ class AirportViewSet(
     viewsets.ModelViewSet,
 ):
     serializer_class = AirportSerializer
-    permission_classes = (IsAuthenticatedReadOnlyOrIsAdmin,)
     queryset = Airport.objects.all()
 
     def get_queryset(self):
@@ -74,7 +71,6 @@ class RouteViewSet(viewsets.ModelViewSet):
         JSONRenderer,
         CustomBrowsableAPIRenderer,
     ]
-    permission_classes = (IsAuthenticatedReadOnlyOrIsAdmin,)
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -103,7 +99,6 @@ class CrewViewSet(
 ):
     queryset = Crew.objects.all()
     serializer_class = CrewSerializer
-    permission_classes = (IsAuthenticatedReadOnlyOrIsAdmin,)
 
 
 class AirplaneViewSet(
@@ -111,7 +106,6 @@ class AirplaneViewSet(
 ):
     queryset = Airplane.objects.select_related()
     serializer_class = AirplaneSerializer
-    permission_classes = (IsAuthenticatedReadOnlyOrIsAdmin,)
 
     def get_queryset(self):
         queryset = self.queryset
@@ -182,7 +176,6 @@ class FlightViewSet(
         "airplane",
     ).prefetch_related("crew")
     serializer_class = FlightSerializer
-    permission_classes = (IsAuthenticatedReadOnlyOrIsAdmin,)
 
     def get_serializer_class(self):
         if self.action == "list":
