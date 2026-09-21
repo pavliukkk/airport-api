@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "airport",
     "rest_framework",
     "debug_toolbar",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -156,6 +157,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "airport.permissions.IsAuthenticatedReadOnlyOrIsAdmin",
     ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 SIMPLE_JWT = {
