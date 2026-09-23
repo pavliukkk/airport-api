@@ -6,7 +6,7 @@ from drf_spectacular.utils import (
 )
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
@@ -569,7 +569,7 @@ class OrderViewSet(
 ):
     queryset = Order.objects.prefetch_related("tickets")
     serializer_class = OrderSerializer
-    permission_classes = ()
+    permission_classes = (IsAuthenticated,)
 
     @extend_schema(
         summary="List orders",
